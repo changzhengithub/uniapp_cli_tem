@@ -1,0 +1,11 @@
+// 引入外部字体包
+
+// 引入字体包
+@font-face {
+  /* 重命名字体名 */
+  font-family: 'TCloudNumber';
+  /* 引入字体 */
+  src: url('@/static/fonts/TCloudNumber-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}

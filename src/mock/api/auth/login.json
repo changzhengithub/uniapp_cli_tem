@@ -1,0 +1,19 @@
+{
+    "code": 0,
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3NDMyMzk2MjAxNDcwMzYxNjEsInVzZXJuYW1lIjoiam1ibDAwMDAwMDAxNiIsImFwcElkIjoidHQyYWZiNWM0NmI1YzgzOWRmMDEiLCJrb2xJZCI6IjY5MzgzMzA2MzM0OTY5MzY3NDAiLCJvcGVuSWQiOiJfMDAwaDkzelBRbjNRT1RjWG9iXzg5SlZLSUhqVUs0M1FfRl8iLCJ1bmlvbklkIjoiZTQ3YzA1YjAtN2FlMi01ZGJiLTllZmMtYTEzZTk1N2I2OWE0Iiwic3ViIjoiXzAwMGg5M3pQUW4zUU9UY1hvYl84OUpWS0lIalVLNDNRX0ZfIiwiaXNzIjoic2l5dXRvbmctc2VydmVyIiwiYXVkIjoic2l5dXRvbmctYXBwIiwiaWF0IjoxNzA1Mzg5Mjg0LCJuYmYiOjE3MDUzODkyODQsImV4cCI6MTcwNTk5NDA4NH0.YYzz3Axc_hEAaBSUAHkzIhkqmVTagM3vEsyNvNoTljE",
+        "userInfo": {
+            "userId": "1743239620147036161",
+            "status": 0,
+            "username": "爱意无限",
+            "nickname": "爱意无限",
+            "avatar": "https://cdn.uviewui.com/uview/album/6.jpg",
+            "gender": null,
+            "cellPhone": "1776532xxxx",
+            "appId": "",
+            "tenantId": null,
+            "authTime": 1704455688000
+        }
+    },
+    "msg": ""
+}
