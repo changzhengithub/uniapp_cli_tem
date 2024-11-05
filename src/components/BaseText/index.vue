@@ -15,10 +15,10 @@
  * @param {String} lineEndColor 两边底线渐变结束颜色
  * @param {Object} baseStyle 文字样式
  * @author cxx
- * @example <ts-base-text title="xxx"></ts-base-text>
+ * @example <BaseText title="xxx"></BaseText>
  * */
 export default {
-  name: 'TsBaseText',
+  name: 'BaseText',
   props: {
     text: {
       type: String,

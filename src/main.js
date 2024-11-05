@@ -10,7 +10,7 @@ import uView from 'uview-ui'
 Vue.use(uView)
 
 // mock数据
-if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_MOCK) {
+if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_MOCK === 'true') {
   require('./mock/mock')
 }
 

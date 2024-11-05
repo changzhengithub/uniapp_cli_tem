@@ -14,7 +14,7 @@
       </view>
       <!-- 底部文字 -->
       <view class="wrap-base" v-if="productList.length && productList.length >= pagination.total">
-        <ts-base-text title="没有更多了"></ts-base-text>
+        <base-text title="没有更多了"></base-text>
       </view>
       <!-- 底部上拉加载 -->
       <u-loadmore v-if="productList.length < pagination.total" height="80rpx" fontSize="14" :status="pagination.status" icon-type="flower" color="#ccc" />
@@ -28,8 +28,12 @@
  * @author cxx
  * */
 import { mapMutations, mapActions, mapState } from 'vuex'
+import BaseText from '@/components/BaseText'
 import { homeListApi } from '@/api/home'
 export default {
+  components: {
+    BaseText
+  },
   data() {
     return {
       loading: false,

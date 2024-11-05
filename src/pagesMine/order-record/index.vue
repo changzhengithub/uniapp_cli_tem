@@ -43,7 +43,7 @@
 
       <!-- 底部文字 -->
       <view class="wrap-base" v-if="productList.length && pagination.status == 'nomore'">
-        <ts-base-text title="没有更多了"></ts-base-text>
+        <base-text title="没有更多了"></base-text>
       </view>
     </view>
 
@@ -61,12 +61,12 @@
 
 import { mapMutations, mapActions, mapState } from 'vuex'
 
-import TsBaseText from '@/components/ts-base-text'
+import BaseText from '@/components/BaseText'
 import { orderListApi } from '@/api/order'
 export default {
   name: 'OrderRecord',
   components: {
-    'ts-base-text': TsBaseText,
+    BaseText
   },
   data() {
     return {
