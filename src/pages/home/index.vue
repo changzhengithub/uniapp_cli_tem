@@ -53,7 +53,7 @@ export default {
     return {
       loading: false,
       tabNavList: [
-        { name: '产品', url: '/pagesHome/product/index' },
+        { name: '图表', url: '/pagesHome/product/index' },
         { name: '文章', url: '/pagesHome/article/index' },
         { name: '新闻', url: '/pagesHome/news/index' },
         { name: '帮助', url: '/pagesHome/help-detail/index' }

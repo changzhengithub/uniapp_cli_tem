@@ -10,7 +10,6 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        common: '@/common',
         static: '@/static',
         components: '@/components'
       }
