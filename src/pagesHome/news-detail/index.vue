@@ -18,15 +18,19 @@ export default {
       detailData: {}
     }
   },
-  onLoad() {
-    this.getArticleDetail()
+  onLoad(options) {
+    const { id } = options
+    this.getArticleDetail(id)
   },
 
   methods: {
     // 获取详情
-    getArticleDetail() {
+    getArticleDetail(id) {
+      const params = {
+        id
+      }
       // 请求接口
-      detailApi().then(res => {
+      detailApi(params).then(res => {
         const data = res.data
         console.log(data)
       })

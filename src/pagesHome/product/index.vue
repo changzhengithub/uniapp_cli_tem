@@ -1,5 +1,5 @@
 <template>
-  <view class="pages-article-detail-index">
+  <view class="pages-product-index">
     产品中心
   </view>
 </template>
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pages-article-detail-index {
+.pages-product-index {
   width: 100%;
   min-height: 100vh;
   background-color: #F3F3F3;

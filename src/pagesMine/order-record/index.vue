@@ -6,52 +6,32 @@
       </view>
       <!-- 列表 -->
       <view class="wrap-list">
-        <view class="list-item" v-for="(item, index) in productList" :key="index" @click="gotoOrderDetail(item)">
+        <view class="list-item" v-for="(item, index) in productList" :key="index">
           <view class="item-header">
-            <view class="header-no">订单：{{ item.order_id }}</view>
-            <view class="header-status" v-if="item._status">
-              <view class="status-item" v-if="item._status._type == 9">等待买家付款</view>
-              <view class="status-item" v-if="item._status._type == 0">待付款</view>
-              <view class="status-item" v-if="item._status._type == 1">
-                待发货
-                <text v-if="item.refund.length">，退款中</text>
-              </view>
-              <view class="status-item" v-if="item._status._type == 2">
-                待收货
-                <text v-if="item.refund.length">，退款中</text>
-              </view>
-              <view class="status-item" v-if="item._status._type == 3">
-                已完成
-                <text v-if="item.refund.length">，退款中</text>
-              </view>
+            <view class="header-no">订单：{{ item.id }}</view>
+            <view class="header-status">
+              <view class="status-item" v-if="item.status == 0">待付款</view>
+              <view class="status-item" v-if="item.status == 1"> 待发货 </view>
+              <view class="status-item" v-if="item.status == 2"> 待收货 </view>
+              <view class="status-item" v-if="item.status == 3"> 已完成 </view>
             </view>
           </view>
-          <view class="item-detail" v-for="(cart, i) in item.cartInfo" :key="i">
+          <view class="item-detail">
             <view class="detail-picture">
-              <image :src="cart.productInfo.image" mode="scaleToFill" />
+              <image src="https://cdn.uviewui.com/uview/album/6.jpg" mode="scaleToFill" />
             </view>
             <view class="detail-info">
               <view class="info-title">
-                <view class="title-text u-line-1">{{cart.productInfo.store_name}}</view>
-                <view class="title-price">￥{{ cart.productInfo.price }}</view>
+                <view class="title-text u-line-1">{{item.title}}</view>
               </view>
               <view class="info-size">
-                <!-- <view class="size-text">共1000盒，还剩389盒 拷贝 2</view> -->
-                <view class="size-num">×{{ item.total_num }}</view>
+                <view class="size-num">×{{ item.play }}</view>
+                <text class="size-price">￥{{ item.price }}</text>
               </view>
             </view>
           </view>
-          <view class="item-payment">
-            <!-- <view class="payment-time">{{item._add_time}}</view> -->
-            <text class="payment-text">实付款</text>
-            <text class="payment-price">￥{{ item.pay_price }}</text>
-          </view>
           <view class="item-more">
-            <view class="more-btn" v-if="item._status._type == 2" @click.stop="gotoExpress(item)">查看物流</view>
-            <view class="more-btn" v-if="item._status._type == 0" @click.stop="cancelOrder(item, index)">取消订单</view>
-            <view class="more-btn btn-success" v-if="item._status._type == 0" @click.stop="payAgain(item)">立即付款</view>
-            <view class="more-btn btn-success" v-if="item._status._type == 2" @click.stop="sureTake(item)">确认收货</view>
-            <view class="more-btn" v-if="(item._status._type == 2 || item._status._type == 1) && !item.refund.length" @click.stop="gotoRefund(item)">申请退款</view>
+            <view class="more-btn btn-success">确认收货</view>
           </view>
         </view>
       </view>
@@ -82,8 +62,9 @@
 import { mapMutations, mapActions, mapState } from 'vuex'
 
 import TsBaseText from '@/components/ts-base-text'
+import { orderListApi } from '@/api/order'
 export default {
-  name: 'HelpCate',
+  name: 'OrderRecord',
   components: {
     'ts-base-text': TsBaseText,
   },
@@ -95,8 +76,7 @@ export default {
       // 查询参数
       queryParams: {
         page: 1,
-        limit: 20,
-        type: 9
+        limit: 20
       },
       tabActiveIndex: 0,
       tabList: [
@@ -134,16 +114,7 @@ export default {
     }
     this.getProductList(true)
   },
-  onShow() {
-    // const pages = getCurrentPages()
-    // const currentPage = pages[pages.length - 1]
-    // const options = currentPage.options
-    // const { type } = options
-    // if (type) {
-    //   this.queryParams.type = type
-    // }
-    this.getProductList(true)
-  },
+
   // 下拉刷新
   onPullDownRefresh() {
     this.pullRefresh()
@@ -164,35 +135,35 @@ export default {
       this.getProductList(true)
     },
 
-    // 获取猜你喜欢列表
+    // 获取列表
     getProductList(flag) {
       // 重置数据，重新请求
       this.queryParams.page = 1
-      this.pagination.count = 0
+      this.pagination.total = 0
       this.pagination.status = 'loadmore'
       this._getList(flag)
     },
 
     /**
-     * 获取视频列表
+     * 获取列表
      * @param {Boolean} flag 是否重置列表，默认false不重置
      * */
     _getList(flag) {
       this.loading = true
       const params = {
-        ...this.queryParams
+        ... this.queryParams
       }
       // 请求接口
-      this.getOrderListApi(params).then(data => {
-        const list = data
+      orderListApi(params).then(res => {
+        const { list, total } = res.data
+        list.forEach(item => {
+          item.donate_percent = Math.ceil((item.already_donate / item.total_donate) * 100)
+        })
         // 如果是刷新直接赋值，否则添加到列表中
         this.productList = this.isFefresher || flag ? list : [...this.productList, ...list]
-        if (data.length < this.queryParams.limit) {
-          this.pagination.status = 'nomore'
-        } else {
-          this.queryParams.page += 1
-          this.pagination.status = 'loadmore'
-        }
+        this.pagination.total = total
+        // 判断是否底部上拉加载更多
+        this.pagination.status = this.productList.length < total ? 'loadmore' : 'nomore'
       }).finally(() => {
         this.loading = false
         // 结束下拉加载
@@ -202,7 +173,9 @@ export default {
     },
     // 上拉加载更多
     pullUpLoadMore() {
-      if (this.pagination.status == 'loadmore') {
+      // 如果列表长度小于total继续上拉加载更多
+      if (this.productList.length < this.pagination.total) {
+        this.queryParams.page += 1
         this._getList()
       }
     },
@@ -212,10 +185,6 @@ export default {
       // 开启下拉加载
       this.isFefresher = true
       this.getProductList(true)
-    },
-    // 是否禁用下拉刷新
-    toggleRefresh(refresh) {
-      this.enabledRefresh = refresh
     },
 
     // 支付
@@ -290,50 +259,6 @@ export default {
             })
           }
         }
-      })
-    },
-
-    // 取消订单
-    cancelOrder(item, index) {
-      const that = this
-      uni.showModal({
-        title: '提示',
-        content: '确认取消该订单？',
-        success: function (res) {
-          if (res.confirm) {
-            const params ={
-              id: item.order_id
-            }
-            that.cancelOrderApi(params).then(data => {
-              that.productList.splice(index, 1)
-              uni.showToast({
-                title: '取消成功',
-                icon: 'none',
-                duration: 2000
-              })
-            })
-          }
-        }
-      })
-    },
-
-    // 申请退款
-    gotoRefund(item) {
-      uni.navigateTo({
-        url: `/pagesProduct/refund/index?orderId=${item.order_id}`
-      })
-    },
-
-    // 查看物流
-    gotoExpress(item) {
-      uni.navigateTo({
-        url: `/pagesProduct/express/index?orderId=${item.order_id}`
-      })
-    },
-    // 跳转到帮助详情
-    gotoOrderDetail(item) {
-      uni.navigateTo({
-        url: `/pagesProduct/order-detail/index?orderId=${item.order_id}`
       })
     },
 
@@ -419,6 +344,7 @@ export default {
         }
         .item-detail {
           display: flex;
+          align-items: center;
           width: 100%;
           margin-bottom: 10rpx;
           .detail-picture {
@@ -439,19 +365,13 @@ export default {
               display: flex;
               align-items: center;
               width: 100%;
+              margin-bottom: 20rpx;
               overflow: hidden;
               .title-text {
-                flex: 1;
                 font-weight: bold;
                 font-size: 30rpx;
                 color: #333333;
                 line-height: 58rpx;
-              }
-              .title-price {
-                font-weight: bold;
-                font-size: 30rpx;
-                color: #FF592C;
-                line-height: 40rpx;
               }
             }
             .info-size {
@@ -459,42 +379,18 @@ export default {
               align-items: center;
               justify-content: space-between;
               width: 100%;
-              .size-text {
-                font-weight: 500;
-                font-size: 24rpx;
-                color: #333333;
-                line-height: 48rpx;
-              }
+              font-weight: 500;
+              font-size: 24rpx;
               .size-num {
-                font-weight: 500;
-                font-size: 24rpx;
                 color: #999999;
+              }
+              .size-price {
+                color: #FF592C;
               }
             }
           }
         }
-        .item-payment {
-          // display: flex;
-          // align-items: center;
-          width: 100%;
-          margin-bottom: 10rpx;
-          text-align: right;
-          font-weight: 500;
-          font-size: 24rpx;
-          line-height: 28rpx;
-          .payment-time {
-            flex: 1;
-            color: #999;
-            text-align: left;
-          }
-          .payment-text {
-            color: #999;
-          }
-          .payment-price {
-            color: #333;
-          }
-        }
-     
+   
         .item-more {
           display: flex;
           align-items: center;

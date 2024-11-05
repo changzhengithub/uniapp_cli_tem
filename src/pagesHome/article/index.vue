@@ -1,30 +1,11 @@
 <template>
-  <view class="pages-home-index">
-    <view class="index-banner">
-      <image src="@/static/images/home/banner.png" mode="scaleToFill" />
-    </view>
-    <view class="index-nav">
-      <view class="nav-list">
-        <view class="nav-item" v-for="(item, index) in tabNavList" :key="index" @click="gotoPage(item.url)">
-          <view class="item-icon">
-            <image :src="`/static/images/home/nav-icon0${index + 1}.png`" mode="scaleToFill" />
-          </view>
-          <view class="item-text">{{item.name}}</view>
-        </view>
-      </view>
-    </view>
-
+  <view class="pages-article-index">
     <view class="index-wrap">
       <!-- 列表 -->
       <view class="wrap-list" v-if="productList.length">
-        <view class="list-item" v-for="(item, index) in productList" :key="index" @click="gotoCateDetail(item)">
-          <view class="item-img">
-            <image src="../../static/images/home/item.png" mode="scaleToFill" />
-          </view>
-          <view class="item-detail">
-            <view class="detail-title text-line-1">{{item.title}}</view>
-            <view class="detail-text">共{{item.gold}}个</view>
-          </view>
+        <view class="list-item" v-for="(item, index) in productList" :key="index" @click="gotoDetail(item)">
+          <view class="item-title text-line-1">{{item.title}}</view>
+          <view class="item-text text-line-1">{{item.title}}</view>
         </view>
       </view>
       <!-- 空状态 -->
@@ -43,7 +24,7 @@
 
 <script>
 /**
- * @desc 首页
+ * @desc 文章列表
  * @author cxx
  * */
 import { mapMutations, mapActions, mapState } from 'vuex'
@@ -52,12 +33,6 @@ export default {
   data() {
     return {
       loading: false,
-      tabNavList: [
-        { name: '文章', url: '' },
-        { name: '新闻', url: '' },
-        { name: '详情', url: '' },
-        { name: '关于', url: '' },
-      ],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -154,6 +129,14 @@ export default {
       this.enabledRefresh = refresh
     },
 
+
+    // 跳转到详情
+    gotoDetail(item) {
+      uni.navigateTo({
+        url: `/pagesHome/article-detail/index?id=${item.id}`
+      })
+    },
+
     // 页面跳转
     gotoPage(url) {
       uni.navigateTo({
@@ -165,107 +148,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pages-home-index {
+.pages-article-index {
   width: 100%;
   min-height: 100vh;
-  background-color: #F3F3F3;
+  background-color: #fff;
 
-  .index-banner {
-    width: 100%;
-    height: 300rpx;
-    padding: 24rpx 24rpx;
-    image {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .index-nav {
-    width: 100%;
-    padding: 0 24rpx;
-    margin-bottom: 24rpx;
-    .nav-list {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      padding: 30rpx 0;
-      background-color: #fff;
-      border-radius: 20rpx;
-      .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 25%;
-  
-        .item-icon {
-          width: 93rpx;
-          height: 93rpx;
-          margin-bottom: 19rpx;
-  
-          image {
-            width: 100%;
-            height: 100%;
-          }
-        }
-  
-        .item-text {
-          font-weight: 500;
-          font-size: 28rpx;
-          color: #333333;
-        }
-      }
-    }
-
-  }
 
   .index-wrap {
     width: 100%;
-    padding: 0 24rpx;
-
+    
     .wrap-list {
-      display: flex;
-      flex-wrap: wrap;
-      // width: 100%;
-      margin: 0 -12rpx;
-
+      width: 100%;
+      
       .list-item {
-        width: calc(50% - 24rpx);
-        // height: 220rpx;
-        margin: 0 12rpx;
-        margin-bottom: 20rpx;
-        border-radius: 20rpx;
-        background-color: #fff;
-        
-        .item-img {
-          width: 100%;
-          height: 300rpx;
-          border-radius: 20rpx;
-          overflow: hidden;
+        width: 100%;
+        padding: 32rpx 24rpx;
+        border-bottom: 1rpx solid #f3f3f3;
 
-          image {
-            width: 100%;
-            height: 100%;
-          }
+        .item-title {
+          width: 100%;
+          margin-bottom: 15rpx;
+          font-weight: 500;
+          font-size: 32rpx;
+          color: #333333;
+          line-height: 52rpx;
         }
-
-        .item-detail {
+        .item-text {
           width: 100%;
-          padding: 20rpx 18rpx;
-          .detail-title {
-            width: 100%;
-            margin-bottom: 15rpx;
-            font-weight: 500;
-            font-size: 28rpx;
-            color: #333333;
-            line-height: 30rpx;
-          }
-
-          .detail-text {
-            width: 100%;
-            font-weight: 500;
-            font-size: 24rpx;
-            color: #333333;
-          }
+          font-weight: 500;
+          font-size: 24rpx;
+          color: #333333;
         }
       }
     }

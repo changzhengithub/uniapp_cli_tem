@@ -14,7 +14,7 @@
     </view>
     <view class="index-wrap">
       <view class="wrap-order">
-        <view class="order-header" @click="gotoPage('/pagesProduct/order-record/index')">
+        <view class="order-header" @click="gotoPage('/pagesMine/order-record/index')">
           <view class="header-title">我的订单</view>
           <view class="header-more">
             <text>查看全部</text>
@@ -102,7 +102,7 @@ export default {
     gotoOrderCenter(item) {
       if (this.token) {
         uni.navigateTo({
-          url: `/pagesProduct/order-record/index?type=${item.type}`
+          url: `/pagesMine/order-record/index?type=${item.type}`
         })
       } else {
         this.toLogin()

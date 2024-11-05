@@ -98,7 +98,7 @@ export default {
 
   methods: {
 
-    // 获取猜你喜欢列表
+    // 获取列表
     getProductList(flag) {
       // 重置数据，重新请求
       this.queryParams.page = 1
@@ -108,7 +108,7 @@ export default {
     },
 
     /**
-     * 获取视频列表
+     * 获取列表
      * @param {Boolean} flag 是否重置列表，默认false不重置
      * */
     _getList(flag) {

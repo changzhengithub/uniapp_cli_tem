@@ -1,11 +1,11 @@
 /**
  * @author: cxx
  * @desc: 小程序工程公共样式
+ * 如果要使用变量，需要在uni.scss中进行引入
  */
 
-@import './theme.scss';
-@import './common.scss';
-@import './font.scss';
+@import './_common.scss';
+@import './_font.scss';
 
 view {
   font-family: "PingFang SC";
